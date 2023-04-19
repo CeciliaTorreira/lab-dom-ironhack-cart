@@ -40,7 +40,6 @@ function calculateAll() {
   let totalCartPrice = document.querySelector("#total-value span") 
   totalCartPrice.innerHTML = totalPrice;
   
-
 }
 
 // ITERATION 4
@@ -50,25 +49,59 @@ function removeProduct(event) {
   console.log('The target in remove is:', target); //Consola: The target in remove is: <button class=​"btn btn-remove">​Remove​</button>​ index.js:50
                                                    //! Consigo esto en la consola pero solo al pulsar el primer botón, con el segundo no funciona.
   //... your code goes here                        //! Intenté hacer un bucle para que abarcase los dos remove button pero no lo logré
-  console.log("Probando")
+                                                   //! //! Actualización: usé querySelector y no querySelectorAll para los botones
+  console.log("Probando")                          //! Tras ver la explicación de Jorge entendí que no hice mal la parte de borrar toda la fila, pero yo creía que
+                                                   //! había que resetear quantity y subtotal y que la fila en si siguiese intacta
   
+let removeButton = target.parentNode.parentNode
+console.log(removeButton)
+removeButton.remove()
+
 }
-let button = document.querySelector(".btn-remove") //!Esta sería la localización del botón "Remove." Lo saqué mirando el HTML, espero conseguirlo con el comando .target pero todavía no ha salido.
-button.addEventListener("click", removeProduct)  
+let button = document.querySelectorAll(".btn-remove") //!Esta sería la localización del botón "Remove." Lo saqué mirando el HTML, espero conseguirlo con el comando .target pero todavía no ha salido.
+ 
 
- /* button.forEach((eachButton)=>{                
-  eachButton.addEventListener("click", removeProduct) 
-})  */
+ button.forEach((eachButton)=>{                
+  eachButton.addEventListener("click", removeProduct)  //! NOTA: usar más console.log y NO BORRARLOS para guiarme y hacer más comprensible cada paso
 
-// ITERATION 5
+})  
+
+// ITERATION 5              //! Hecha desde 0 con Jorge por la mañana
 
 function createProduct() {
+  console.log("Creando item")
+  const productName = document.querySelector(".create-product input[type=text]")           //! CSS selector por TIPO
+  const productPrice = document.querySelector(".create-product input[type=number]")
+  console.log(productName.value, productPrice.value)
   //... your code goes here
+  let table = document.querySelector("tbody")
+  let element = 
+  `<tr> 
+  <td class="name">
+  <span>${productName.value}</span>
+</td>
+<td class="price">$<span>${productName.value}</span></td>
+<td class="quantity">
+  <input type="number" value="0" min="0" placeholder="Quantity" />
+</td>
+<td class="subtotal">$<span>0</span></td>
+<td class="action">
+  <button class="btn btn-remove">Remove</button>
+</td>
+</tr>`
+ //! Se añade un string que se asemeja a un elemento HTML
+ table.innerHTML += element
+ 
+
 }
+//! El botón de remove no funcionará con el nuevo elemento creado, habría que añadir la misma lógica de abajo de borrar un botón tras la creación de dicho nuevo item 
 
 window.addEventListener('load', () => {
   const calculatePricesBtn = document.getElementById('calculate');
   calculatePricesBtn.addEventListener('click', calculateAll);
 
   //... your code goes here
+  const createButton = document.querySelector("#create")          
+  createButton.addEventListener("click", createProduct)
+
 });
